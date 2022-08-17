@@ -1,0 +1,32 @@
+
+name: 'jaffle_shop'
+version: '0.1'
+config-version: 2
+profile: 'feature_store'
+model-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+seed-paths: ["data"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_modules"
+    - "logs"
+
+seeds:
+  jaffle_shop:
+    schema: vertex_samples
+
+models:
+  jaffle_shop:
+    schema: jaffle_shop
+    +materialized: table
+    marts:
+      core:
+        intermediate:
+          +materialized: ephemeral
+    staging:
+      +materialized: view
+      +tags: ["staging", "hourly"]
